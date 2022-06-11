@@ -233,13 +233,31 @@ def feedback(id):
 @app.route('/admin_reply/<int:id>',methods=['GET','POST'])
 @login_required
 def admin_reply(id):
-    reply=Reply.query.filter_by(feedback_id=id)
+    replies=Reply.query.filter_by(feedback_id=id)
     if request.method=='POST':
         message=request.form['reply']
         reply=Reply(message=message,feedback_id=id,user_id=current_user.id)
         db.session.add(reply)
         db.session.commit()
-        return redirect(url_for('booking',id=id),reply=reply)
+        return redirect(url_for('booking',id=id))
+
+#admin delete booking
+@app.route('/delete_booking/<int:id>')
+def delete_booking(id):
+    booking=Booking.query.get(id)
+    db.session.delete(booking)
+    db.session.commit()
+    return redirect(url_for('admin'))
+
+
+
+#admin update user
+@app.route('/delete_user/<int:id>',methods=['GET','POST'])
+def delete_user(id):
+    user=User.query.get(id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('admin'))
 
 
 
