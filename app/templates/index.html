@@ -14,6 +14,7 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{url_for('static',filename='styles.css')}}" rel="stylesheet" />
+
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -96,7 +97,7 @@
                              <td>{{booking.event_date}}</td>
                                  <td><b>{{booking.status}}</b></td>
                                  {%if booking.status=='attended'%}
-                             <td><a href="{{url_for('booking',id=booking.id)}}" class="btn btn-warning" >comment</a> </td>
+                             <td><a href="{{url_for('booking',id=booking.secret_id)}}" class="btn btn-warning" >comment</a> </td>
                                  {%endif%}
                              </tr>
                              {%endfor%}
@@ -157,14 +158,14 @@
             <section class="resume-section" id="education">
                 <div class="resume-section-content">
                     <h2 class="mb-5">Guitar courses</h2>
-                                              <div class="alert alert-danger" role="alert">
-  Coming soon  !!!!!!
-</div>
+                    <div class="alert alert-danger" role="alert">
+                          Coming soon  !!!!!!
+                      </div>
                     {%for course in courses%}
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                            <div class="alert alert-danger" role="alert">
-  Coming soon
-</div>
+                                      Coming soon
+                            </div>
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{course.name}}</h3>
                             <div class="subheading mb-3"><a href="{{url_for('course',id=course.id)}}">objective:{{course.objective}}</a></div>
@@ -326,9 +327,7 @@
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      
       </div>
     </div>
   </div>

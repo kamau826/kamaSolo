@@ -237,7 +237,7 @@
                             <td>{{booking.status}}</td>
 
                             <td>
-                                <a href="{{url_for('booking',id=booking.id)}}" class="btn btn-warning">open</a>
+                                <a href="{{url_for('booking',id=booking.secret_id)}}" class="btn btn-warning">open</a>
                             </td>
                         </tr>
                         {% endif %}
@@ -259,7 +259,7 @@
                             <td>{{booking.user.username}}</td>
                             <td>{{booking.status}}</td>
                             <td>
-                                <a href="{{url_for('booking',id=booking.id)}}" class="btn btn-success">open</a>
+                                <a href="{{url_for('booking',id=booking.secret_id)}}" class="btn btn-success">open</a>
                             </td>
                             {%endif%}
                         </tr>
@@ -281,7 +281,7 @@
                             <td>{{booking.user.username}}</td>
                             <td>{{booking.status}}</td>
                             <td>
-                                <a href="{{url_for('booking',id=booking.id)}}" class="btn btn-success">open</a>
+                                <a href="{{url_for('booking',id=booking.secret_id)}}" class="btn btn-success">open</a>
                             </td>
                             {%endif%}
                         </tr>
