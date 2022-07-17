@@ -45,6 +45,7 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_name=db.Column(db.String(255))
     event_location=db.Column(db.String(100))
+    secret_id=db.Column(db.String(255))
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'))
     event_date= db.Column(db.String(255))
     start_time=db.Column(db.String(255))
