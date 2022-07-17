@@ -4,6 +4,10 @@ from app.models import User,Lesson,Course,Booking,Event,Feedback,Reply
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import current_user,login_user,logout_user,login_required
 from datetime import date
+import os
+import string
+import secrets
+
 
 loginmanager.login_view='login'
 
@@ -147,7 +151,9 @@ def book():
         date=request.form['event_date']
         time=request.form['start_time']
         price=request.form['price']
-        booking=Booking(user_id=user_id,event_id=event_id,event_name=name,event_location=location,event_date=date,start_time=time,price=price)
+        alphabet = string.ascii_letters + string.digits
+        secret_id = ''.join(secrets.choice(alphabet) for i in range(32))
+        booking=Booking(user_id=user_id,event_id=event_id,event_name=name,event_location=location,event_date=date,start_time=time,price=price,secret_id= secret_id)
         db.session.add(booking)
         db.session.commit()
         flash('booking request recieved,I will reach you in a few')
@@ -181,11 +187,11 @@ def book_session():
 
 
 #view individual booking
-@app.route('/booking/<int:id>',methods=['GET','POST'])
+@app.route('/booking/<id>',methods=['GET','POST'])
 @login_required
 def booking(id):
-    booking=Booking.query.get(id)
-    feedback=Feedback.query.filter_by(booking_id=id)
+    booking=Booking.query.filter_by(secret_id=id).first()
+    feedback=Feedback.query.filter_by(booking_id=booking.id)
     reply=Reply.query.filter_by(user_id=current_user.id)
     
     return render_template('view_booking.html',booking=booking,feedback=feedback)
@@ -217,7 +223,7 @@ def attend(id):
     db.session.commit()
     return redirect(url_for('admin'))
 
-@app.route('/feedback/<int:id>',methods=['GET','POST'])
+@app.route('/feedback/<id>',methods=['GET','POST'])
 @login_required
 def feedback(id):
     booking=Booking.query.get(id)
