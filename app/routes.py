@@ -9,6 +9,7 @@ import string
 import secrets
 
 
+
 loginmanager.login_view='login'
 
 
@@ -26,7 +27,9 @@ def register():
         user=User.query.filter_by(username=request.form['username'])
         # if user:
         #     flash("username already taken")
-        user=User(username=request.form['username'],email=request.form['email'],password_hash=generate_password_hash(request.form['password']),is_admin=False,phone=request.form['phone'])
+        alphabet = string.ascii_letters + string.digits
+        user_key = ''.join(secrets.choice(alphabet) for i in range(32))
+        user=User(username=request.form['username'],email=request.form['email'],password_hash=generate_password_hash(request.form['password']),is_admin=False,phone=request.form['phone'],user_key=user_key)
         db.session.add(user)
         db.session.commit()
         flash('registration successful')
@@ -48,9 +51,9 @@ def login():
         return redirect(url_for('login'))
     return render_template('login.html')
 
-@app.route('/admin')
+@app.route('/admin/<kk>')
 @login_required
-def admin():
+def admin(kk):
     users=User.query.all()
     lessons=Lesson.query.all()
     courses=Course.query.all()
@@ -119,7 +122,7 @@ def add_course():
         db.session.add(course)
         db.session.commit()
         flash('course added successfully')
-        return redirect(url_for('admin'))
+        return redirect(url_for('admin',kk=current_user.user_key))
 
 #delete course
 @app.route('/delete_course/<int:id>',methods=['GET','POST'])
@@ -163,6 +166,7 @@ def book():
 
 #events
 @app.route('/add_event',methods=['GET','POST'])
+@login_required
 def add_event():
     if request.method=='POST':
 
@@ -173,7 +177,7 @@ def add_event():
         db.session.add(event)
         db.session.commit()
         flash('event added successfully')
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin',kk=current_user.user_key))
 
 
 
@@ -205,7 +209,7 @@ def admin_accept(id):
         booking = Booking.query.get(id)
         booking.status='confirmed'
         db.session.commit()
-        return redirect(url_for('admin'))
+        return redirect(url_for('index'))
 
 #admin_reject
 @app.route('/admin_reject/<int:id>',methods=['GET','POST'])
@@ -213,7 +217,7 @@ def admin_reject(id):
     booking = Booking.query.get(id)
     booking.status = 'sorry,date taken'
     db.session.commit()
-    return redirect(url_for('admin'))
+    return redirect(url_for('index'))
 
 
 @app.route('/attend/<int:id>')
@@ -221,7 +225,7 @@ def attend(id):
     booking=Booking.query.get(id)
     booking.status='attended'
     db.session.commit()
-    return redirect(url_for('admin'))
+    return redirect(url_for('index'))
 
 @app.route('/feedback/<id>',methods=['GET','POST'])
 @login_required
@@ -248,22 +252,22 @@ def admin_reply(id):
         return redirect(url_for('booking',id=id))
 
 #admin delete booking
-@app.route('/delete_booking/<int:id>')
-def delete_booking(id):
-    booking=Booking.query.get(id)
+@app.route('/delete_booking/<secret_id>')
+def delete_booking(secret_id):
+    booking=Booking.query.filter_by(secret_id=secret_id)
     db.session.delete(booking)
     db.session.commit()
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin',kk=current_user.user_key))
 
 
 
 #admin update user
-@app.route('/delete_user/<int:id>',methods=['GET','POST'])
-def delete_user(id):
-    user=User.query.get(id)
+@app.route('/delete_user/<user_key>',methods=['GET','POST'])
+def delete_user(user_key):
+    user=User.query.filter_by(user_key=user_key)
     db.session.delete(user)
     db.session.commit()
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin',kk=current_user.user_key))
 
 
 
