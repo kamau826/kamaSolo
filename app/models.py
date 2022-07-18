@@ -13,6 +13,7 @@ class User(db.Model,UserMixin):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     is_admin=db.Column(db.Boolean)
+    user_key=db.Column(db.String(255))
     phone=db.Column(db.Integer)
     posts = db.relationship('Lesson', backref='author', lazy='dynamic')
     bookings=db.relationship('Booking',backref='user',lazy='dynamic')
