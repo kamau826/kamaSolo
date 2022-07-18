@@ -34,7 +34,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Awards</a></li>
                      <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{url_for('logout')}}"> logout</a></li>
 <!--                    {%if current_user.is_admin%}-->
-<!--                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{url_for('admin')}}">Admin</a></li>-->
+<!--                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{url_for('admin',kk=current_user.user_key)}}">Admin</a></li>-->
 <!--                    {%endif%}-->
                 </ul>
             </div>
@@ -94,7 +94,7 @@
                                      <td>{{user.email}}</td>
                                      <td>{{user.is_admin}}</td>
                                      {% if not user.is_admin %}
-                                     <td><a href="{{url_for('delete_user',id=user.id)}}" class="btn btn-danger sm">Delete</a> </td>
+                                     <td><a href="{{url_for('delete_user',id=user.user_key)}}" class="btn btn-danger sm">Delete</a> </td>
                                      {%endif%}
                                  </tr>
                                 {%endfor%}

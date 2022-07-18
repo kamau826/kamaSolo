@@ -43,8 +43,8 @@
 
 
                      {%endif%}
-                    {%if current_user.username=='admin'%}
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{url_for('admin')}}">Admin</a></li>
+                    {%if current_user.is_admin%}
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{{url_for('admin',kk=current_user.user_key)}}">Admin</a></li>
                     {%endif%}
                 </ul>
             </div>
